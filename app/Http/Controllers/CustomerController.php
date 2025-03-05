@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,9 +13,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
-        $customers = DB::table('customers')->get();
-        return view('layouts.customers.index', ['customers' => $customers]);
+        return view('pages.customers.index', ['customers' => Customer::all()]);
     }
 
     /**
@@ -23,7 +22,7 @@ class CustomerController extends Controller
     public function create()
     {
         //
-        return view('layouts.customers.create');
+        return view('pages.customers.create');
     }
 
     /**
@@ -31,24 +30,32 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $validated = $request->validate([
-            'name' => 'required',
-            'email' => 'required|unique:customers',
-            'phone' => 'required',
-            'license_number' => 'required',
-
-        ]);
-        DB::table('customers')->insert([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'license_number' => $request->license_number,
-            'created_at' => now(),
-            'updated_at' => now(),
+        $request->validate([
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email', 'unique:customers'],
+            'phone' => ['required', 'string'],
+            'license_number' => ['required', 'string'],
         ]);
 
-        return redirect()->route('customers.index');
+        // DB::table('customers')->insert([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'phone' => $request->phone,
+        //     'license_number' => $request->license_number,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+
+        $customer = new Customer();
+
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->phone = $request->phone;
+        $customer->license_number = $request->license_number;
+
+        $customer->save();
+
+        return redirect()->route('customers.index')->with('success', 'Il cliente è stato aggiunto con successo!');
     }
 
     /**
@@ -56,48 +63,7 @@ class CustomerController extends Controller
      */
     public function show(string $id)
     {
-        //
         $customer = DB::table('customers')->find($id);
         return view('layouts.customers.show', ['customer' => $customer]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-        $customer = DB::table('customers')->find($id);
-        return view('layouts.customers.edit', ['customer' => $customer]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-        $validated = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'license_number' => 'required',
-        ]);
-        DB::table('customers')->where('id', $id)->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'license_number' => $request->license_number,
-            'updated_at' => now(),
-        ]);
-        return redirect()->route('customers.show', ['customer' => $id]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

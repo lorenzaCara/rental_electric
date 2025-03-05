@@ -7,7 +7,7 @@
         <h1 class="text-xl">Crea Noleggio</h1>
         @csrf
         <h3 class="text-sm">Veicolo</h3>
-        <select class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg text-gray-300" name="vehicle_id" required>
+        <select class="px-4 py-2 text-gray-300 bg-gray-800 border border-gray-500 rounded-lg" name="vehicle_id" required>
             <option value="" disabled selected>Seleziona un veicolo</option>
             @foreach ($vehicles as $vehicle)
                 <option value="{{ $vehicle->id }}" {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>
@@ -15,7 +15,7 @@
             @endforeach
         </select>
         <h3 class="text-sm">Cliente</h3>
-        <select class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg text-gray-300" name="customer_id" required>
+        <select class="px-4 py-2 text-gray-300 bg-gray-800 border border-gray-500 rounded-lg" name="customer_id" required>
             <option value="" disabled selected>Seleziona un cliente</option>
             @foreach ($customers as $customer)
                 <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
@@ -27,12 +27,12 @@
             type="datetime-local" name="start_time" value="{{ old('start_time') }}" required>
         <h3 class="text-sm">Orario di fine</h3>
         <input class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg placeholder:text-gray-500"
-            type="datetime-local" name="end_time" value="{{ old('end_time') }}" required onchange="calculateCost()">
-        <div class="flex justify-between items-center">
+            type="datetime-local" name="end_time" value="{{ old('end_time') }}" onchange="calculateCost()">
+        {{-- <div class="flex items-center justify-between">
             <h3 class="text-sm">Costo totale</h3>
-            <input class=" bg-transparent text-gray-300 text-right" type="text" name="total_cost" id="total_cost"
+            <input class="text-right text-gray-300 bg-transparent " type="text" name="total_cost" id="total_cost"
                 style="pointer-events: none;" size="10" readonly>
-        </div>
+        </div> --}}
         <input type="hidden" name="status" value="active">
         <button class="px-4 py-2 text-white bg-blue-500 rounded-lg" type="submit">Invia</button>
     </form>

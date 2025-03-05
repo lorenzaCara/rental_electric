@@ -4,13 +4,13 @@
 
 @section('content')
     <form action="{{ route('vehicles.store') }}" method="post" class="flex flex-col max-w-xs gap-4 px-4 mx-auto">
-        <h1 class="text-xl">Modifica utente</h1>
+        <h1 class="text-xl">Crea veicolo</h1>
         @csrf
         <h3 class="text-sm">Modifica modello</h3>
         <input class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg placeholder:text-gray-500" placeholder="Name"
             type="text" name="model" value="{{ old('model') }}">
         <h3 class="text-sm">Modifica tipo</h3>
-        <select class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg text-gray-300" name="type" required>
+        <select class="px-4 py-2 text-gray-300 bg-gray-800 border border-gray-500 rounded-lg" name="type" required>
             <option value="" disabled selected>Seleziona un tipo</option>
             <option value="car" {{ old('type') == 'car' ? 'selected' : '' }}>Car</option>
             <option value="scooter" {{ old('type') == 'scooter' ? 'selected' : '' }}>Scooter</option>
@@ -21,7 +21,7 @@
             placeholder="Battery capacity" type="number" name="battery_capacity" value="{{ old('battery_capacity') }}"
             required>
         <h3 class="text-sm">Modifica disponibilità</h3>
-        <select class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg text-gray-300" name="status" required>
+        <select class="px-4 py-2 text-gray-300 bg-gray-800 border border-gray-500 rounded-lg" name="status" required>
             <option value="" disabled selected>Seleziona uno stato</option>
             <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>Available
             </option>

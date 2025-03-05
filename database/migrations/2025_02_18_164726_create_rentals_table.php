@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
-            $table->decimal('total_cost', 10, 2);
+            $table->decimal('total_cost', 10, 2)->nullable();;
             $table->enum('status', ['active', 'completed', 'cancelled']);
             $table->timestamps();
         });

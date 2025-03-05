@@ -15,11 +15,11 @@ Route::resource('vehicles', VehicleController::class);
 
 Route::resource('customers', CustomerController::class)->except('edit', 'update', 'destroy');
 
-Route::resource('rentals', RentalController::class)->except('show', 'edit', 'update', 'destroy');
+Route::resource('rentals', RentalController::class)->only('index', 'create', 'store');
 
 Route::get('/complete/{id}', function ($id) {
     $rental = DB::table('rentals')->find($id);
-    return view('layouts.rentals.complete', ['rental' => $rental]);
+    return view('pages.rentals.complete', ['rental' => $rental]);
 })->name('rentals.complete');
 
 Route::post('/complete/{id}', function ($id) {
