@@ -20,7 +20,15 @@
                 <div>Stato: {{ $vehicle->status }}</div>
                 <div>Tariffa oraria: {{ $vehicle->hourly_rate }}</div>
                 <div>Creato il: {{ $vehicle->created_at }}</div>
-                <div>Aggiornato il: {{ $vehicle->updated_at }}</div>
+                <div class="mb-2">Aggiornato il: {{ $vehicle->updated_at }}</div>
+                <span>Tags</span>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    @foreach ($vehicle->tags as $tag)
+                        <div class="px-3 py-1 bg-gray-600 rounded-xl">
+                            {{ $tag->name }}
+                        </div>
+                    @endforeach
+                </div>
                 <div class="flex gap-2 mt-4">
                     <a href="{{ route('vehicles.show', $vehicle->id) }}"
                         class="flex items-center justify-center h-10 gap-2 p-4 text-white transition-colors bg-blue-500 hover:bg-blue-700 rounded-xl">

@@ -32,6 +32,13 @@
         <h3 class="text-sm">Modifica tariffa oraria</h3>
         <input class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg placeholder:text-gray-500"
             placeholder="Hourly rate" type="number" name="hourly_rate" value="{{ old('hourly_rate') }}" required>
+        <strong>Tags</strong>
+        @foreach ($tags as $tag)
+            <div class="flex gap-2">
+                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" />
+                <label>{{ $tag->name }}</label>
+            </div>
+        @endforeach
         <button class="px-4 py-2 text-white bg-blue-500 rounded-lg" type="submit">Invia</button>
     </form>
     @if ($errors->any())

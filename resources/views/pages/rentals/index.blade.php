@@ -41,7 +41,7 @@
     </div>
     @if (count($rentals) === 0)
         <div class="w-full p-4 mt-4 border border-dashed rounded-xl">
-            Nessun cliente registrato
+            Nessun noleggio registrato
         </div>
     @endif
 @endsection

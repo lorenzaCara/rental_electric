@@ -12,7 +12,7 @@ class Customer extends Model
 {
     public function vehicles(): BelongsToMany
     {
-        return $this->belongsToMany(Vehicle::class, 'rentals')->using(Rental::class)->withPivot('start_time', 'end_time', 'total_cost');
+        return $this->belongsToMany(Vehicle::class, 'rentals')->using(Rental::class)->withPivot('start_time', 'end_time', 'total_cost', 'status');
     }
 
     public function rentals(): HasMany

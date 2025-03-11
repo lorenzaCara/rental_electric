@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -14,10 +15,7 @@ class VehicleController extends Controller
          */
         public function index()
         {
-
-                //$vehicles = DB::table('vehicles')->get();
-                $vehicles = Vehicle::all();
-                return view('pages.vehicles.index', compact('vehicles'));
+                return view('pages.vehicles.index', ['vehicles' => Vehicle::all()]);
         }
 
         /**
@@ -25,7 +23,8 @@ class VehicleController extends Controller
          */
         public function create()
         {
-                return view('pages.vehicles.create');
+                $tags = Tag::all();
+                return view('pages.vehicles.create', compact('tags'));
         }
 
         /**
@@ -51,18 +50,27 @@ class VehicleController extends Controller
                 //     'updated_at' => now(),
                 // ]);
 
-                $vehicle = new Vehicle();
+                // $vehicle = new Vehicle();
 
-                $vehicle->model = $request->model;
-                $vehicle->type = $request->type;
-                $vehicle->battery_capacity = $request->battery_capacity;
-                $vehicle->status = $request->status;
-                $vehicle->hourly_rate = $request->hourly_rate;
+                // $vehicle->model = $request->model;
+                // $vehicle->type = $request->type;
+                // $vehicle->battery_capacity = $request->battery_capacity;
+                // $vehicle->status = $request->status;
+                // $vehicle->hourly_rate = $request->hourly_rate;
 
-                // salvo il nuovo record sul db
-                $vehicle->save();
+                // // salvo il nuovo record sul db
+                // $vehicle->save();
 
-                return redirect()->route('vehicles.index');
+                // creo il record sul database relativo al veicolo
+                $vehicle = Vehicle::create($request->all());
+
+                // assegno i tags al veicolo creando un record nella pivot table tag_vehicle
+                $vehicle->tags()->attach($request->tags, [
+                        'created_at' => now(),
+                        'updated_at' => now()
+                ]);
+
+                return redirect()->route('vehicles.index')->with('success', 'Veicolo creato con successo!');
         }
 
         /**
