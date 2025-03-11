@@ -41,15 +41,18 @@ class RentalController extends Controller
             'start_time' => 'required',
             'status' => 'required',
         ]);
-        DB::table('rentals')->insert([
-            'vehicle_id' => $request->vehicle_id,
-            'customer_id' => $request->customer_id,
-            'start_time' => $request->start_time,
-            'total_cost' => $request->total_cost,
-            'status' => $request->status,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+
+        // DB::table('rentals')->insert([
+        //     'vehicle_id' => $request->vehicle_id,
+        //     'customer_id' => $request->customer_id,
+        //     'start_time' => $request->start_time,
+        //     'total_cost' => $request->total_cost,
+        //     'status' => $request->status,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+
+
 
         return redirect()->route('rentals.index');
     }

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Rental extends Pivot
 {
-    protected $table = 'rentals';
-
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
