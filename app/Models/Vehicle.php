@@ -5,6 +5,35 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $model
+ * @property string $type
+ * @property int $battery_capacity
+ * @property string $status
+ * @property string $hourly_rate
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Rental|null $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Customer> $customers
+ * @property-read int|null $customers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereBatteryCapacity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereHourlyRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Vehicle extends Model
 {
 

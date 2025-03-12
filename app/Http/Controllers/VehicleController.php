@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVehicleRequest;
 use App\Models\Tag;
 use App\Models\Vehicle;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,9 @@ class VehicleController extends Controller
         {
                 $newVehicles = Vehicle::whereRelation('tags', 'name', 'new')->get();
 
-                $vehicles = Vehicle::doesntHave('tags')->orWhereRelation('tags', 'name', '<>', 'new')->get();
+                $vehicles = Vehicle::whereDoesntHave('tags', function (Builder $query) {
+                        $query->where('name', 'new');
+                })->get();
 
                 return view('pages.vehicles.index', ['vehicles' => $vehicles, 'newVehicles' => $newVehicles]);
         }
@@ -35,15 +38,8 @@ class VehicleController extends Controller
         /**
          * Store a newly created resource in storage.
          */
-        public function store(Request $request)
+        public function store(StoreVehicleRequest $request)
         {
-                $request->validate([
-                        'model' => ['required', 'string'],
-                        'type' => ['required', Rule::in(['car', 'scooter', 'bike'])],
-                        'battery_capacity' => ['required', 'integer'],
-                        'status' => ['required', Rule::in(['available', 'rented', 'maintenance'])],
-                        'hourly_rate' => ['required', 'decimal:2'],
-                ]);
 
                 // DB::table('vehicles')->insert([
                 //     'model' => $request->model,
