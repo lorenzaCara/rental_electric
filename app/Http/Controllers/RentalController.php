@@ -65,9 +65,13 @@ class RentalController extends Controller
         return redirect()->route('rentals.index');
     }
 
-    public function complete(string $id)
+    public function complete(Rental $rental)
     {
-        $rental = DB::table('rentals')->find($id);
-        return view('pages.rentals.complete', ['rental' => $rental]);
+        $rental->update([
+            'end_time' => now(),
+            'status' => 'completed'
+        ]);
+
+        return redirect()->route('rentals.index')->with('success', 'Il noleggio n° ' . $rental->id . ' è stato completato con successo!');
     }
 }

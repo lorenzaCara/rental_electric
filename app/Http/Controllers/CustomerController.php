@@ -21,7 +21,6 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
         return view('pages.customers.create');
     }
 
@@ -46,24 +45,21 @@ class CustomerController extends Controller
         //     'updated_at' => now(),
         // ]);
 
-        $customer = new Customer();
+        $customer = Customer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'license_number' => $request->license_number,
+        ]);
 
-        $customer->name = $request->name;
-        $customer->email = $request->email;
-        $customer->phone = $request->phone;
-        $customer->license_number = $request->license_number;
-
-        $customer->save();
-
-        return redirect()->route('customers.index')->with('success', 'Il cliente è stato aggiunto con successo!');
+        return redirect()->route('customers.index')->with('success', 'Il cliente ' . $customer->name . ' è stato aggiunto con successo!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Customer $customer)
     {
-        $customer = DB::table('customers')->find($id);
-        return view('layouts.customers.show', ['customer' => $customer]);
+        return view('pages.customers.show', ['customer' => $customer]);
     }
 }

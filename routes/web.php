@@ -17,20 +17,17 @@ Route::resource('customers', CustomerController::class)->except('edit', 'update'
 
 Route::resource('rentals', RentalController::class)->only('index', 'create', 'store');
 
-Route::get('/complete/{id}', function ($id) {
-    $rental = DB::table('rentals')->find($id);
-    return view('pages.rentals.complete', ['rental' => $rental]);
-})->name('rentals.complete');
+// Route::post('/complete/{id}', function (string $id) {
+//     $validated = request()->validate([
+//         'end_time' => 'required',
+//         'status' => 'required',
+//     ]);
+//     DB::table('rentals')->where('id', $id)->update([
+//         'end_time' => request()->end_time,
+//         'status' => request()->status,
+//         'updated_at' => now(),
+//     ]);
+//     return redirect()->route('rentals.index');
+// })->name('rentals.complete.store');
 
-Route::post('/complete/{id}', function ($id) {
-    $validated = request()->validate([
-        'end_time' => 'required',
-        'status' => 'required',
-    ]);
-    DB::table('rentals')->where('id', $id)->update([
-        'end_time' => request()->end_time,
-        'status' => request()->status,
-        'updated_at' => now(),
-    ]);
-    return redirect()->route('rentals.index');
-})->name('rentals.complete.store');
+Route::post('rentals/{rental}/complete', [RentalController::class, 'complete'])->name('rentals.complete');

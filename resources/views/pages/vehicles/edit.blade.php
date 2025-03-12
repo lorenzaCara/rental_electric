@@ -12,7 +12,7 @@
         <input class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg placeholder:text-gray-500" placeholder="Name"
             type="text" name="model" value="{{ old('model', $vehicle->model) }}">
         <h3 class="text-sm">Modifica tipo</h3>
-        <select class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg text-gray-300" name="type" required>
+        <select class="px-4 py-2 text-gray-300 bg-gray-800 border border-gray-500 rounded-lg" name="type" required>
             <option value="" disabled selected>Seleziona un tipo</option>
             <option value="car" {{ old('type', $vehicle->type) == 'car' ? 'selected' : '' }}>Car</option>
             <option value="scooter" {{ old('type', $vehicle->type) == 'scooter' ? 'selected' : '' }}>Scooter</option>
@@ -23,7 +23,7 @@
             placeholder="Battery capacity" type="number" name="battery_capacity"
             value="{{ old('battery_capacity', $vehicle->battery_capacity) }}" required>
         <h3 class="text-sm">Modifica disponibilità</h3>
-        <select class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg text-gray-300" name="status" required>
+        <select class="px-4 py-2 text-gray-300 bg-gray-800 border border-gray-500 rounded-lg" name="status" required>
             <option value="" disabled selected>Seleziona uno stato</option>
             <option value="available" {{ old('status', $vehicle->status) == 'available' ? 'selected' : '' }}>Available
             </option>
@@ -35,6 +35,14 @@
         <input class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg placeholder:text-gray-500"
             placeholder="Hourly rate" type="number" name="hourly_rate"
             value="{{ old('hourly_rate', $vehicle->hourly_rate) }}" required>
+        <strong>Tags</strong>
+        @foreach ($tags as $tag)
+            <div class="flex gap-2">
+                <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
+                    {{ $vehicle->tags->contains($tag) ? 'checked' : '' }} />
+                <label>{{ $tag->name }}</label>
+            </div>
+        @endforeach
         <button class="px-4 py-2 text-white bg-blue-500 rounded-lg" type="submit">Invia</button>
     </form>
     @if ($errors->any())

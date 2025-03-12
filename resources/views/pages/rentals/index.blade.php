@@ -24,12 +24,13 @@
                 <div>Created at: {{ $rental->created_at }}</div>
                 <div>Updated at: {{ $rental->updated_at }}</div>
                 @if ($rental->status !== 'completed')
-                    <div class="flex gap-2 mt-4">
-                        <a href="{{ route('rentals.complete', $rental->id) }}"
-                            class="flex items-center justify-center h-10 gap-2 p-4 text-white transition-colors bg-green-500 hover:bg-green-700 rounded-xl">
+                    <form action="{{ route('rentals.complete', $rental->id) }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="flex items-center justify-center h-10 gap-2 p-4 mt-4 text-white transition-colors bg-green-500 hover:bg-green-700 rounded-xl">
                             <x-lucide-check class="size-4" />Completa noleggio
-                        </a>
-                    </div>
+                        </button>
+                    </form>
                 @else
                     <div
                         class="flex items-center justify-center h-10 gap-2 p-4 mt-4 text-white transition-colors bg-green-500/10 rounded-xl">
