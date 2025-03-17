@@ -24,12 +24,14 @@ export default {
                 light: {
                     ...require("flyonui/src/theming/themes")["light"],
                     primary: "#20783d",
+                    "primary-content": "#e5ffec",
                 },
             },
             {
                 dark: {
                     ...require("flyonui/src/theming/themes")["dark"],
                     primary: "#20783d",
+                    "primary-content": "#e5ffec",
                 },
             },
         ],
