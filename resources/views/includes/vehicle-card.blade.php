@@ -1,43 +1,108 @@
-<div class="relative p-4 border rounded-2xl">
-    @isset($type)
-        @if ($type === 'new')
-            <div class="absolute px-2 py-1 bg-orange-500 top-2 right-2 rounded-xl">
-                NEW
+@php
+    switch ($vehicle->type) {
+        case 'car':
+            $vehicleImage = 'car.png';
+            break;
+        case 'bike':
+            $vehicleImage = 'bike.png';
+            break;
+        case 'scooter':
+            $vehicleImage = 'scooter.png';
+            break;
+        default:
+            break;
+    }
+@endphp
+
+<div class="relative card" href="{{ route('vehicles.show', $vehicle->id) }}">
+    <div class="p-4 card-body">
+        <div class="flex items-center justify-between">
+            <h5 class="card-title">{{ $vehicle->model }}</h5>
+            <div class="dropdown relative inline-flex rtl:[--placement:bottom-end]">
+                <button id="dropdown-menu-icon" type="button" class="btn btn-square btn-soft" aria-haspopup="menu"
+                    aria-expanded="false" aria-label="Dropdown">
+                    <span class="icon-[tabler--dots-vertical] size-6"></span>
+                </button>
+                <ul class="hidden rounded-2xl dropdown-menu dropdown-open:opacity-100 min-w-60" role="menu"
+                    aria-orientation="vertical" aria-labelledby="dropdown-menu-icon">
+                    <li>
+                        <a class="rounded-xl dropdown-item" href="{{ route('vehicles.show', $vehicle->id) }}">
+                            <x-lucide-eye class="size-4" />Mostra
+                        </a>
+                    </li>
+                    <li>
+                        <a class="rounded-xl dropdown-item" href="{{ route('vehicles.edit', $vehicle->id) }}">
+                            <x-lucide-pencil class="size-4" />Modifica
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{{ route('vehicles.destroy', $vehicle->id) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button
+                                class="justify-start text-red-500 rounded-xl hover:bg-red-500/10 dropdown-item"><x-lucide-trash
+                                    class="size-4" />
+                                Elimina</button>
+                        </form>
+                    </li>
+                </ul>
             </div>
-        @endif
-    @endisset
-    <div class="font-semibold">Modello: <span class="text-blue-500">{{ $vehicle->model }}</span></div>
-    <div>Tipo: {{ $vehicle->type }}</div>
-    <div>Capacità batteria: {{ $vehicle->battery_capacity }}</div>
-    <div>Stato: {{ $vehicle->status }}</div>
-    <div>Tariffa oraria: {{ $vehicle->hourly_rate }}</div>
-    <div>Creato il: {{ $vehicle->created_at }}</div>
-    <div class="mb-2">Aggiornato il: {{ $vehicle->updated_at }}</div>
-    <span>Tags</span>
-    <div class="flex flex-wrap gap-2 mt-2">
-        @foreach ($vehicle->tags as $tag)
-            <div class="px-3 py-1 bg-gray-600 rounded-xl">
-                {{ $tag->name }}
+        </div>
+        <div class="text-lg font-medium text-gray-500">{{ ucfirst($vehicle->type) }}</div>
+        <a href="{{ route('vehicles.show', $vehicle->id) }}">
+            <img src="{{ asset('images/' . $vehicleImage) }}" alt="{{ $vehicle->model }}" class="w-full rounded-2xl">
+        </a>
+        <div class="flex flex-wrap items-center gap-2">
+            <div class="relative w-20 overflow-hidden badge">
+                <div class="absolute top-0 left-0 h-full rounded-lg bg-gradient-to-br {{ $vehicle->battery_capacity > 80 ? ' from-green-500 to-green-400' : ($vehicle->battery_capacity > 30 ? 'from-yellow-500 to-yellow-400' : 'from-red-500 to-red-400') }}"
+                    style="width: {{ $vehicle->battery_capacity }}%;"></div>
+                <div
+                    class="absolute inset-0 flex items-center justify-center text-xs gap-1 font-semibold text-base-content dark:text-white {{ $vehicle->battery_capacity > 80 ? 'text-white' : '' }}">
+                    <x-lucide-battery-charging class="size-5" />
+                    {{ $vehicle->battery_capacity }}%
+                </div>
             </div>
-        @endforeach
-    </div>
-    <div class="flex gap-2 mt-4">
-        <a href="{{ route('vehicles.show', $vehicle->id) }}"
-            class="flex items-center justify-center h-10 gap-2 p-4 text-white transition-colors bg-blue-500 hover:bg-blue-700 rounded-xl">
-            <x-lucide-eye class="size-4" />Mostra
-        </a>
-        <a href="{{ route('vehicles.edit', $vehicle->id) }}"
-            class="flex items-center justify-center h-10 gap-2 p-4 text-white transition-colors bg-amber-500 hover:bg-amber-700 rounded-xl">
-            <x-lucide-pencil class="size-4" />Modifica
-        </a>
-        <form action="{{ route('vehicles.destroy', $vehicle->id) }}" method="POST">
-            @method('DELETE')
-            @csrf
-            <button type="submit"
-                class="flex items-center justify-center h-10 gap-2 p-4 text-white transition-colors bg-red-500 hover:bg-red-700 rounded-xl">
-                <x-lucide-trash class="size-4" />
-                Elimina
-            </button>
-        </form>
+            <div class="relative badge">
+                @switch($vehicle->status)
+                    @case('available')
+                        <div class="relative">
+                            <div class="bg-green-500 rounded-full animate-ping size-2" style="animation-duration: 4s;">
+                            </div>
+                            <div
+                                class="absolute font-semibold -translate-x-1/2 -translate-y-1/2 bg-green-500 border rounded-full top-1/2 left-1/2 border-white/20 size-2">
+                            </div>
+                        </div>
+                    @break
+
+                    @case('rented')
+                        <div class="bg-yellow-500 rounded-full size-2">
+                        </div>
+                    @break
+
+                    @case('maintenance')
+                        <div class="bg-red-500 rounded-full size-2">
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+                {{ ucwords($vehicle->status) }}
+            </div>
+            <div class="relative badge">
+                {{ $vehicle->hourly_rate }} &euro; / h
+            </div>
+        </div>
+        <div class="w-full h-px my-4 bg-gray-900/10 dark:bg-white/10"></div>
+        <div class="flex flex-wrap gap-2 text-sm">
+            @foreach ($vehicle->tags as $tag)
+                <div
+                    class="badge {{ $tag->name == 'New' ? 'text-white bg-gradient-to-br from-orange-600 to-orange-400' : '' }}">
+                    @if ($tag->name === 'New')
+                        <x-lucide-star class="size-3" />
+                    @endif
+                    {{ $tag->name }}
+                </div>
+            @endforeach
+        </div>
     </div>
 </div>

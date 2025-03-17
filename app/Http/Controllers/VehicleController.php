@@ -17,10 +17,10 @@ class VehicleController extends Controller
          */
         public function index()
         {
-                $newVehicles = Vehicle::whereRelation('tags', 'name', 'new')->get();
+                $newVehicles = Vehicle::whereRelation('tags', 'name', 'New')->get();
 
                 $vehicles = Vehicle::whereDoesntHave('tags', function (Builder $query) {
-                        $query->where('name', 'new');
+                        $query->where('name', 'New');
                 })->get();
 
                 return view('pages.vehicles.index', ['vehicles' => $vehicles, 'newVehicles' => $newVehicles]);
