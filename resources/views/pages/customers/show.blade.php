@@ -96,17 +96,11 @@
                                         <tr>
                                             <td class="p-4">{{ $rental->vehicle->brand }} {{ $rental->vehicle->model }}
                                             </td>
-                                            <td class="p-4">{{ $rental->start_time->format('d/m/Y H:i') }}</td>
+                                            <td class="p-4">{{ $rental->start_time }}</td>
                                             <td class="p-4">
-                                                {{ $rental->end_time ? $rental->end_time->format('d/m/Y H:i') : 'In corso' }}
+                                                {{ $rental->end_time ? $rental->end_time : 'In corso' }}
                                             </td>
                                             <td class="p-4">€{{ number_format($rental->total_cost, 2) }}</td>
-                                            <td class="p-4">
-                                                <a href="{{ route('rentals.show', $rental->id) }}"
-                                                    class="btn btn-soft btn-sm">
-                                                    <x-lucide-eye class="size-4" />
-                                                </a>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
