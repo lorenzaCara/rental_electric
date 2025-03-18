@@ -3,7 +3,7 @@
 @section('title', 'Vehicles')
 
 @section('content')
-    <div class="flex justify-between">
+    <div class="flex items-center justify-between mb-6">
         <h1 class="mb-4 text-2xl font-semibold">Veicoli</h1>
         <a class="btn btn-gradient btn-primary" href="{{ route('vehicles.create') }}">
             <x-lucide-plus class="size-4" />Aggiungi veicolo

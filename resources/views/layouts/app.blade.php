@@ -75,6 +75,7 @@
         <main id="main-container" class="p-4">
             @yield('content')
         </main>
+        @stack('scripts')
     </body>
 
 </html>

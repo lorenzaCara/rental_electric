@@ -22,10 +22,10 @@
                     {{ $customer->name }}</option>
             @endforeach
         </select>
-        <h3 class="text-sm">Giorno di inizio</h3>
+        <h3 class="text-sm">Data e Ora di Inizio</h3>
         <input class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg placeholder:text-gray-500"
             type="datetime-local" name="start_time" value="{{ old('start_time') }}" required>
-        <h3 class="text-sm">Orario di fine</h3>
+        <h3 class="text-sm">Data e Ora di Fine</h3>
         <input class="px-4 py-2 bg-gray-800 border border-gray-500 rounded-lg placeholder:text-gray-500"
             type="datetime-local" name="end_time" value="{{ old('end_time') }}" onchange="calculateCost()">
         {{-- <div class="flex items-center justify-between">

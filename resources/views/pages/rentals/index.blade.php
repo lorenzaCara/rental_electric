@@ -1,47 +1,91 @@
 @extends('layouts.app')
 
-@section('title', 'Rentals')
+@section('title', 'Noleggi')
 
 @section('content')
-
-    <div class="flex justify-between">
+    <div class="flex items-center justify-between mb-6">
         <h1 class="mb-4 text-2xl font-semibold">Noleggi</h1>
-        <a class="flex items-center justify-center h-10 gap-2 p-4 text-white transition-colors bg-blue-500 hover:bg-blue-700 rounded-xl"
-            href="{{ route('rentals.create') }}">
-            <x-lucide-plus class="size-4 " />Aggiungi noleggio
+        <a class="btn btn-gradient btn-primary" href="{{ route('rentals.create') }}">
+            <x-lucide-plus class="size-4" />Aggiungi noleggio
         </a>
     </div>
     @include('includes.success-alert')
+
     <div class="grid gap-4 md:grid-cols-3">
         @foreach ($rentals as $rental)
-            <div class="p-4 border rounded-lg">
-                <div class="font-semibold">Vehicle: <span class="text-blue-500">{{ $rental->vehicle->model }}</span></div>
-                <div>Customer: {{ $rental->customer->name }}</div>
-                <div>Start Time: {{ $rental->start_time }}</div>
-                <div>End Time: {{ $rental->end_time ?? 'Ongoing' }}</div>
-                <div>Total Cost: ${{ $rental->total_cost }}</div>
-                <div>Status: {{ $rental->status }}</div>
-                <div>Created at: {{ $rental->created_at }}</div>
-                <div>Updated at: {{ $rental->updated_at }}</div>
-                @if ($rental->status !== 'completed')
-                    <form action="{{ route('rentals.complete', $rental->id) }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="flex items-center justify-center h-10 gap-2 p-4 mt-4 text-white transition-colors bg-green-500 hover:bg-green-700 rounded-xl">
-                            <x-lucide-check class="size-4" />Completa noleggio
-                        </button>
-                    </form>
-                @else
-                    <div
-                        class="flex items-center justify-center h-10 gap-2 p-4 mt-4 text-white transition-colors bg-green-500/10 rounded-xl">
-                        <x-lucide-check class="size-4" />Noleggio completato
+            <div class="card">
+                <div class="p-5 card-body">
+                    <div class="flex items-center justify-between mb-3">
+                        <h5 class="font-bold card-title">
+                            #{{ $rental->id }}
+                            <a href="{{ route('vehicles.show', $rental->vehicle_id) }}"
+                                class="text-primary hover:underline">
+                                {{ $rental->vehicle->brand ?? '' }} {{ $rental->vehicle->model }}
+                            </a>
+                        </h5>
                     </div>
-                @endif
+
+                    <div class="mb-3">
+                        <span class="text-sm text-gray-500">Cliente:</span>
+                        <a href="{{ route('customers.show', $rental->customer_id) }}" class="hover:underline">
+                            {{ $rental->customer->name }}
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <div>
+                            <div class="text-sm text-gray-500">Inizio noleggio</div>
+                            <div class="font-medium">{{ $rental->start_time }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Fine noleggio</div>
+                            <div class="font-medium">
+                                {{ $rental->end_time ? $rental->end_time : 'In corso' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <span class="text-sm text-gray-500">Costo totale:</span>
+                            <span class="font-semibold">€{{ number_format($rental->total_cost, 2) }}</span>
+                        </div>
+                        <div>
+                            @php
+                                $statusColor = 'bg-gray-100 text-gray-800';
+                                if ($rental->status === 'active') {
+                                    $statusColor = 'bg-blue-100 text-blue-800';
+                                } elseif ($rental->status === 'completed') {
+                                    $statusColor = 'bg-green-100 text-green-800';
+                                } elseif ($rental->status === 'cancelled') {
+                                    $statusColor = 'bg-red-100 text-red-800';
+                                }
+                            @endphp
+                            <span class="badge {{ $statusColor }}">{{ ucfirst($rental->status) }}</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full h-px my-4 bg-gray-900/10 dark:bg-white/10"></div>
+
+                    @if ($rental->status !== 'completed')
+                        <form action="{{ route('rentals.complete', $rental->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full btn btn-success">
+                                <x-lucide-check class="size-4" />Completa noleggio
+                            </button>
+                        </form>
+                    @else
+                        <div class="w-full text-green-800 btn btn-disabled bg-green-500/10">
+                            <x-lucide-check class="size-4" />Noleggio completato
+                        </div>
+                    @endif
+                </div>
             </div>
         @endforeach
     </div>
+
     @if (count($rentals) === 0)
-        <div class="w-full p-4 mt-4 border border-dashed rounded-xl">
+        <div class="w-full p-6 mt-6 text-center text-gray-500 border border-dashed rounded-xl bg-gray-50">
             Nessun noleggio registrato
         </div>
     @endif
