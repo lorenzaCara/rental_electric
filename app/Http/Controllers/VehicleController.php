@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Models\Tag;
 use App\Models\Vehicle;
+use App\Services\VehicleService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -12,6 +13,16 @@ use Illuminate\Support\Facades\DB;
 
 class VehicleController extends Controller
 {
+        protected $vehicleService;
+
+        /**
+         * Create a new class instance.
+         */
+        public function __construct(VehicleService $vehicleService)
+        {
+                $this->vehicleService = $vehicleService;
+        }
+
         /**
          * Display a listing of the resource.
          */
@@ -40,36 +51,8 @@ class VehicleController extends Controller
          */
         public function store(StoreVehicleRequest $request)
         {
-
-                // DB::table('vehicles')->insert([
-                //     'model' => $request->model,
-                //     'type' => $request->type,
-                //     'battery_capacity' => $request->battery_capacity,
-                //     'status' => $request->status,
-                //     'hourly_rate' => $request->hourly_rate,
-                //     'created_at' => now(),
-                //     'updated_at' => now(),
-                // ]);
-
-                // $vehicle = new Vehicle();
-
-                // $vehicle->model = $request->model;
-                // $vehicle->type = $request->type;
-                // $vehicle->battery_capacity = $request->battery_capacity;
-                // $vehicle->status = $request->status;
-                // $vehicle->hourly_rate = $request->hourly_rate;
-
-                // // salvo il nuovo record sul db
-                // $vehicle->save();
-
-                // creo il record sul database relativo al veicolo
-                $vehicle = Vehicle::create($request->all());
-
-                // assegno i tags al veicolo creando un record nella pivot table tag_vehicle
-                $vehicle->tags()->attach($request->tags, [
-                        'created_at' => now(),
-                        'updated_at' => now()
-                ]);
+                // chiamo il metodo create del service VehicleService
+                $this->vehicleService->create($request);
 
                 return redirect()->route('vehicles.index')->with('success', 'Veicolo creato con successo!');
         }
