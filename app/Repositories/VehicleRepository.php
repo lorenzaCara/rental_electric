@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Http\Requests\StoreVehicleRequest;
+use App\Models\Vehicle;
 
 class VehicleRepository
 {

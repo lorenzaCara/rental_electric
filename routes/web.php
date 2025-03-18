@@ -3,7 +3,6 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\VehicleController;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
