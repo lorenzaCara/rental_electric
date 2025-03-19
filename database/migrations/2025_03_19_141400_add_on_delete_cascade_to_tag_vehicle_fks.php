@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::table('tag_vehicle', function (Blueprint $table) {
             $table->dropForeign(['tag_id']);
             $table->dropForeign(['vehicle_id']);
-
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
-            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
         });
     }
 
@@ -29,8 +28,8 @@ return new class extends Migration
             $table->dropForeign(['tag_id']);
             $table->dropForeign(['vehicle_id']);
 
-            $table->foreignId('tag_id')->constrained();
-            $table->foreignId('vehicle_id')->constrained();
+            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles');
         });
     }
 };
