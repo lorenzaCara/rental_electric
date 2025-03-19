@@ -12,12 +12,7 @@ use Illuminate\Http\Request;
 class VehicleController extends Controller
 {
 
-    protected $vehicleService;
-
-    public function __construct(VehicleService $vehicleService)
-    {
-        $this->vehicleService = $vehicleService;
-    }
+    public function __construct(protected VehicleService $vehicleService) {}
 
     /**
      * Display a listing of the resource.
