@@ -11,7 +11,7 @@
     </div>
     @include('includes.success-alert')
 
-    <div class="grid gap-4 md:grid-cols-3">
+    <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         @foreach ($rentals as $rental)
             <div class="card">
                 <div class="p-5 card-body">

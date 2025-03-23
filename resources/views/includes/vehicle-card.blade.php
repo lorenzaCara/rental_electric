@@ -92,17 +92,19 @@
                 {{ $vehicle->hourly_rate }} &euro; / h
             </div>
         </div>
-        <div class="w-full h-px my-4 bg-gray-900/10 dark:bg-white/10"></div>
-        <div class="flex flex-wrap gap-2 text-sm">
-            @foreach ($vehicle->tags as $tag)
-                <div
-                    class="badge {{ $tag->name == 'New' ? 'text-white bg-gradient-to-br from-orange-600 to-orange-400' : '' }}">
-                    @if ($tag->name === 'New')
-                        <x-lucide-star class="size-3" />
-                    @endif
-                    {{ $tag->name }}
-                </div>
-            @endforeach
-        </div>
+        @if ($vehicle->tags->count() > 0)
+            <div class="w-full h-px my-4 bg-gray-900/10 dark:bg-white/10"></div>
+            <div class="flex flex-wrap gap-2 text-sm">
+                @foreach ($vehicle->tags as $tag)
+                    <div
+                        class="badge {{ $tag->name == 'New' ? 'text-white bg-gradient-to-br from-orange-600 to-orange-400' : '' }}">
+                        @if ($tag->name === 'New')
+                            <x-lucide-star class="size-3" />
+                        @endif
+                        {{ $tag->name }}
+                    </div>
+                @endforeach
+        @endif
     </div>
+</div>
 </div>
