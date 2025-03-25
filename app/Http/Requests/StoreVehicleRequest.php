@@ -4,9 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 
 class StoreVehicleRequest extends FormRequest
 {
+    public function authorize(Request $request)
+    {
+        return $request->user()->tokenCan('vehicles:create');
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
