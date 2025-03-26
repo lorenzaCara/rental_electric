@@ -126,6 +126,8 @@ namespace App\Models{
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Vehicle> $vehicles
+ * @property-read int|null $vehicles_count
  */
 	class User extends \Eloquent {}
 }
@@ -159,6 +161,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int|null $user_id
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereUserId($value)
  */
 	class Vehicle extends \Eloquent {}
 }

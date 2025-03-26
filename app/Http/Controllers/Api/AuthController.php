@@ -69,4 +69,25 @@ class AuthController extends Controller
             ['message' => 'Logout effettuato con successo']
         );
     }
+
+    /**
+     * Effettua il logout da tutti i dispositivi (revoca tutti i token)
+     */
+    public function logoutAll(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        return response()->json(
+            ['message' => 'Logout effettuato con successo da tutti i dispositivi']
+        );
+    }
+
+    /**
+     * Recupero la lista di token attivi dell'utente
+     */
+    public function tokens(Request $request)
+    {
+        return response()->json([
+            'tokens' => $request->user()->tokens
+        ]);
+    }
 }

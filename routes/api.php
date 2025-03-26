@@ -11,6 +11,8 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', 'user');
         Route::post('/logout', 'logout');
+        Route::post('/logout-all', 'logoutAll');
+        Route::get('/tokens', 'tokens');
     });
 });
 
