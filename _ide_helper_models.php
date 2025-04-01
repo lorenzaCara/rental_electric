@@ -142,6 +142,7 @@ namespace App\Models{
  * @property int $battery_capacity
  * @property string $status
  * @property string $hourly_rate
+ * @property string $image_path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Rental|null $pivot
@@ -162,7 +163,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property int|null $user_id
+ * @property-read mixed $image_url
  * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereImagePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereUserId($value)
  */
 	class Vehicle extends \Eloquent {}

@@ -2,23 +2,48 @@
 
 namespace App\Services;
 
-use App\Http\Requests\StoreVehicleRequest;
+use App\Models\Vehicle;
 use App\Repositories\VehicleRepository;
+use Illuminate\Http\UploadedFile;
 
 class VehicleService
 {
-    protected $vehicleRepository;
+    public function __construct(
+        private VehicleRepository $vehicleRepository
+    ) {}
 
     /**
-     * Create a new class instance.
+     * Update a vehicle with optional image.
+     *
+     * @param Vehicle $vehicle
+     * @param array<string, mixed> $data
+     * @param UploadedFile|null $image
      */
-    public function __construct(VehicleRepository $vehicleRepository)
+    public function update(Vehicle $vehicle, array $data, ?UploadedFile $image = null): bool
     {
-        $this->vehicleRepository = $vehicleRepository;
+        $updated = $this->vehicleRepository->update($vehicle, $data);
+
+        if ($image) {
+            $this->vehicleRepository->updateImage($vehicle, $image);
+        }
+
+        return $updated;
     }
 
-    public function create(StoreVehicleRequest $request)
+    /**
+     * Create a new vehicle with optional image.
+     *
+     * @param array<string, mixed> $data
+     * @param UploadedFile|null $image
+     */
+    public function create(array $data, ?UploadedFile $image = null): Vehicle
     {
-        return $this->vehicleRepository->save($request);
+        $vehicle = $this->vehicleRepository->create($data);
+
+        if ($image) {
+            $this->vehicleRepository->updateImage($vehicle, $image);
+        }
+
+        return $vehicle;
     }
 }

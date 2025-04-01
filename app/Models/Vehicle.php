@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * 
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $battery_capacity
  * @property string $status
  * @property string $hourly_rate
+ * @property string $image_path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Rental|null $pivot
@@ -38,7 +40,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Vehicle extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
@@ -49,8 +50,28 @@ class Vehicle extends Model
         'type',
         'battery_capacity',
         'status',
-        'hourly_rate'
+        'hourly_rate',
+        'image_path'
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<string>
+     */
+    protected $appends = ['image_url'];
+
+    /**
+     * Get the vehicle's image URL.
+     */
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->image_path
+                ? asset('storage/' . $this->image_path)
+                : null
+        );
+    }
 
     public function customers(): BelongsToMany
     {

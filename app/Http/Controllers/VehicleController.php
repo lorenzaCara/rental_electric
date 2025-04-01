@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Vehicle\UpdateVehicleRequest;
+use Illuminate\Http\JsonResponse;
 
 class VehicleController extends Controller
 {
@@ -49,12 +51,17 @@ class VehicleController extends Controller
         /**
          * Store a newly created resource in storage.
          */
-        public function store(StoreVehicleRequest $request)
+        public function store(UpdateVehicleRequest $request): JsonResponse
         {
-                // chiamo il metodo create del service VehicleService
-                $this->vehicleService->create($request);
+                $validated = $request->validated();
+                $image = $request->file('image');
 
-                return redirect()->route('vehicles.index')->with('success', 'Veicolo creato con successo!');
+                $vehicle = $this->vehicleService->create($validated, $image);
+
+                return response()->json([
+                        'message' => 'Veicolo creato con successo',
+                        'vehicle' => $vehicle
+                ], 201);
         }
 
         /**
@@ -78,38 +85,17 @@ class VehicleController extends Controller
         /**
          * Update the specified resource in storage.
          */
-        public function update(Request $request, Vehicle $vehicle)
+        public function update(UpdateVehicleRequest $request, Vehicle $vehicle): JsonResponse
         {
-                $request->validate([
-                        'model' => ['required', 'string'],
-                        'type' => ['required', Rule::in(['car', 'scooter', 'bike'])],
-                        'battery_capacity' => ['required', 'integer'],
-                        'status' => ['required', Rule::in(['available', 'rented', 'maintenance'])],
-                        'hourly_rate' => ['required', 'decimal:2'],
+                $validated = $request->validated();
+                $image = $request->file('image');
+
+                $this->vehicleService->update($vehicle, $validated, $image);
+
+                return response()->json([
+                        'message' => 'Veicolo aggiornato con successo',
+                        'vehicle' => $vehicle->fresh()
                 ]);
-
-                // DB::table('vehicles')->where('id', $id)->update([
-                //     'model' => $request->model,
-                //     'type' => $request->type,
-                //     'battery_capacity' => $request->battery_capacity,
-                //     'status' => $request->status,
-                //     'hourly_rate' => $request->hourly_rate,
-                //     'updated_at' => now(),
-                // ]);
-
-                $vehicle->update([
-                        'model' => $request->model,
-                        'type' => $request->type,
-                        'battery_capacity' => $request->battery_capacity,
-                        'status' => $request->status,
-                        'hourly_rate' => $request->hourly_rate
-                ]);
-
-                $vehicle->tags()->syncWithPivotValues($request->tags, [
-                        'updated_at' => now()
-                ]);
-
-                return redirect()->route('vehicles.index')->with('success', 'Veicolo ' . $vehicle->model . ' aggiornato con successo');
         }
 
         /**
