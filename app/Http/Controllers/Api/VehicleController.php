@@ -35,7 +35,7 @@ class VehicleController extends Controller
     public function store(StoreVehicleRequest $request)
     {
         $vehicle = $this->vehicleService->create($request);
-        return new VehicleResource($vehicle);
+        return $vehicle;
     }
 
     /**

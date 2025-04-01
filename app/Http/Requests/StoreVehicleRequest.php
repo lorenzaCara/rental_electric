@@ -26,6 +26,7 @@ class StoreVehicleRequest extends FormRequest
             'battery_capacity' => ['required', 'integer'],
             'status' => ['required', Rule::in(['available', 'rented', 'maintenance'])],
             'hourly_rate' => ['required', 'decimal:2'],
+            'image' => ['sometimes', 'image', 'max:2048'] // max 2MB
         ];
     }
 }

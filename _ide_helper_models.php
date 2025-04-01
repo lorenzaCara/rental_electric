@@ -161,8 +161,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $image_path
  * @property int|null $user_id
+ * @property-read mixed $image_url
  * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereImagePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vehicle whereUserId($value)
  */
 	class Vehicle extends \Eloquent {}

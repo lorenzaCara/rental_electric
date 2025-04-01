@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -49,8 +50,27 @@ class Vehicle extends Model
         'type',
         'battery_capacity',
         'status',
-        'hourly_rate'
+        'hourly_rate',
+        'image_path'
     ];
+
+    protected $hidden = [
+        'image_path'
+    ];
+
+    protected $appends = [
+        'image_url'
+    ];
+
+    /**
+     * Get image url
+     */
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->image_path ? asset('storage/' . $this->image_path) : null
+        );
+    }
 
     public function customers(): BelongsToMany
     {

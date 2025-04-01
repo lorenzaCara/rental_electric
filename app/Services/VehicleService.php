@@ -19,6 +19,11 @@ class VehicleService
 
     public function create(StoreVehicleRequest $request)
     {
-        return $this->vehicleRepository->save($request);
+        $imageFile = $request->file('image');
+        $vehicle = $this->vehicleRepository->save($request);
+        if ($imageFile) {
+            $this->vehicleRepository->updateImage($vehicle, $imageFile);
+        }
+        return $vehicle;
     }
 }

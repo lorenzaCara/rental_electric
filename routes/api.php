@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\VehicleController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
@@ -18,3 +20,10 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
 
 
 Route::apiResource('vehicles', VehicleController::class)->middleware('auth:sanctum');
+
+Route::post('/write-txt', function (Request $request) {
+    Storage::disk('public')->put('example.txt', $request->text);
+    return response()->json([
+        "message" => "example.txt saved successfully"
+    ]);
+});
