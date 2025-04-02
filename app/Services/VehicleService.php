@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Http\Requests\StoreVehicleRequest;
 use App\Models\Vehicle;
 use App\Repositories\VehicleRepository;
-use GuzzleHttp\Psr7\UploadedFile;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Http\Request;
 
 class VehicleService
 {
@@ -19,16 +19,19 @@ class VehicleService
         $this->vehicleRepository = $vehicleRepository;
     }
 
-    public function create(StoreVehicleRequest $request)
+    public function create(Request $request)
     {
-        // recupero il file dalla request per la key 'image'
+        // estraggo l'immagine dalla request
         $imageFile = $request->file('image');
+
         // salvo i dati ricevuti dalla request nel db (eccetto il file)
         $vehicle = $this->vehicleRepository->save($request);
+
         // controllo se la request contiene un file
         if ($imageFile) {
             // se esiste carico l'immagine nello storage (locale)
             $imagePath = $this->uploadImage($vehicle, $imageFile);
+
             // aggiorno il record del veicolo con l'image path relativo all'immagine caricata
             $this->vehicleRepository->updateImage($vehicle, $imagePath);
         }
