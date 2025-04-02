@@ -17,7 +17,7 @@ class VehicleRepository
         //     'user_id' => $request->user()->id
         // ])->get());
 
-        $vehicle = $request->user()->vehicles()->create($request->all());
+        $vehicle = $request->user()->vehicles()->create($request->except('image'));
 
         // assegno i tags al veicolo creando un record nella pivot table tag_vehicle
         $vehicle->tags()->attach($request->tags, [

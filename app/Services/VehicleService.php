@@ -24,7 +24,7 @@ class VehicleService
         // estraggo l'immagine dalla request
         $imageFile = $request->file('image');
 
-        // salvo i dati ricevuti dalla request nel db (eccetto il file)
+        // salvo i dati ricevuti dalla request nel db
         $vehicle = $this->vehicleRepository->save($request);
 
         // controllo se la request contiene un file
