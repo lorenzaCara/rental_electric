@@ -6,6 +6,7 @@ use App\Models\Vehicle;
 use App\Repositories\VehicleRepository;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VehicleService
 {
@@ -39,6 +40,16 @@ class VehicleService
         return $vehicle;
     }
 
+    public function delete(Vehicle $vehicle)
+    {
+        $res = $this->vehicleRepository->delete($vehicle);
+        if ($res) {
+            $this->deleteImage($vehicle->image_path);
+        }
+        return $res;
+    }
+
+    /** IMAGES METHODS */
 
     public function updateImage(Vehicle $vehicle, UploadedFile $image)
     {

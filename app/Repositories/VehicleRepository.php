@@ -32,6 +32,12 @@ class VehicleRepository
         return $vehicle;
     }
 
+    public function delete(Vehicle $vehicle)
+    {
+        $vehicle->delete();
+        return response()->noContent();
+    }
+
     /**
      * Aggiorna l'immagine del veicolo
      */

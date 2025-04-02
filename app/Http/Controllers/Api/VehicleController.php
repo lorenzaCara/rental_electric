@@ -34,7 +34,8 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicleRequest $request)
     {
-        return $this->vehicleService->create($request);
+        $vehicle = $this->vehicleService->create($request);
+        return new VehicleResource($vehicle);
     }
 
     /**
@@ -58,10 +59,11 @@ class VehicleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Vehicle $vehicle)
     {
-        $vehicle = Vehicle::findOrFail($id);
-        $vehicle->delete();
-        return response()->noContent();
+        $this->vehicleService->delete($vehicle);
+        return response()->json([
+            'message' => 'Veicolo eliminato con successo'
+        ]);
     }
 }
