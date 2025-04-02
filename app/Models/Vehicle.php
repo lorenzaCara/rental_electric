@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * 
@@ -68,7 +69,7 @@ class Vehicle extends Model
     protected function imageUrl(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->image_path ? asset('storage/' . $this->image_path) : null
+            get: fn() => $this->image_path ? Storage::disk('public')->url($this->image_path) : null
         );
     }
 

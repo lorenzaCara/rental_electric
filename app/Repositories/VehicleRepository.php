@@ -31,30 +31,11 @@ class VehicleRepository
     /**
      * Aggiorna l'immagine del veicolo
      */
-    public function updateImage(Vehicle $vehicle, UploadedFile $image)
+    public function updateImage(Vehicle $vehicle, string $imagePath)
     {
-
-        // Elimino l'immagine corrente nel caso esiste già per quel veicolo
-        if ($vehicle->image_path) {
-            $this->deleteImage($vehicle->image_path);
-        }
-
-        // Salvo l'immagine caricata all'interno della cartella vehicles nel disk public
-        $imagePath = $image->storePublicly('vehicles', 'public');
-
         // Aggiorno il record del veicolo con il nuovo file_path
         $vehicle->update([
             'image_path' => $imagePath
         ]);
-    }
-
-    /**
-     * Eliminare un file immagine dallo storage
-     */
-    public function deleteImage(string $imagePath)
-    {
-        if (Storage::disk('public')->exists($imagePath)) {
-            Storage::disk('public')->delete($imagePath);
-        }
     }
 }
