@@ -12,12 +12,7 @@ class VehicleRepository
 
     public function save(Request $request)
     {
-        // creo il record sul database relativo al veicolo
-        // $vehicle = Vehicle::create($request->merge([
-        //     'user_id' => $request->user()->id
-        // ])->get());
-
-        $vehicle = $request->user()->vehicles()->create($request->except('image'));
+        $vehicle = $request->user()->vehicles()->create($request->except('image', 'tags'));
 
         // assegno i tags al veicolo creando un record nella pivot table tag_vehicle
         $vehicle->tags()->attach($request->tags, [
@@ -26,6 +21,14 @@ class VehicleRepository
         ]);
 
         return $vehicle;
+    }
+
+    public function update(Request $request, Vehicle $vehicle)
+    {
+        $vehicle->update($request->except('image', 'tags'));
+        $vehicle->tags()->sync($request->tags, [
+            'updated_at' => now()
+        ]);
     }
 
     /**

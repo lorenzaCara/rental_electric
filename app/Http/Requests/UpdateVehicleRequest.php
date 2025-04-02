@@ -20,6 +20,7 @@ class UpdateVehicleRequest extends FormRequest
             'battery_capacity' => ['sometimes', 'integer'],
             'status' => ['sometimes', Rule::in(['available', 'rented', 'maintenance'])],
             'hourly_rate' => ['sometimes', 'decimal:2'],
+            'image' => ['sometimes', 'image', 'max:2048'] // max 2MB
         ];
     }
 }

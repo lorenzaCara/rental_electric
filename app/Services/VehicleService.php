@@ -9,15 +9,10 @@ use Illuminate\Http\Request;
 
 class VehicleService
 {
-    protected $vehicleRepository;
-
     /**
      * Create a new class instance.
      */
-    public function __construct(VehicleRepository $vehicleRepository)
-    {
-        $this->vehicleRepository = $vehicleRepository;
-    }
+    public function __construct(protected VehicleRepository $vehicleRepository) {}
 
     public function create(Request $request)
     {
@@ -36,6 +31,12 @@ class VehicleService
             $this->vehicleRepository->updateImage($vehicle, $imagePath);
         }
         return $vehicle;
+    }
+
+    public function update(Request $request, Vehicle $vehicle)
+    {
+        $imageFile = $request->file('image');
+        $vehicle = $this->vehicleRepository->update($request, $vehicle);
     }
 
     public function uploadImage(Vehicle $vehicle, UploadedFile $image)

@@ -34,8 +34,7 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicleRequest $request)
     {
-        $vehicle = $this->vehicleService->create($request);
-        return $vehicle;
+        return $this->vehicleService->create($request);
     }
 
     /**
@@ -50,10 +49,9 @@ class VehicleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVehicleRequest $request, string $id)
+    public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
-        $vehicle = Vehicle::findOrFail($id);
-        $vehicle->update($request->validated());
+        $vehicle = $this->vehicleService->update($request, $vehicle);
         return new VehicleResource($vehicle);
     }
 
