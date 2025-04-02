@@ -24,11 +24,7 @@ class VehicleService
 
         // controllo se la request contiene un file
         if ($imageFile) {
-            // se esiste carico l'immagine nello storage (locale)
-            $imagePath = $this->uploadImage($vehicle, $imageFile);
-
-            // aggiorno il record del veicolo con l'image path relativo all'immagine caricata
-            $this->vehicleRepository->updateImage($vehicle, $imagePath);
+            $vehicle = $this->updateImage($vehicle, $imageFile);
         }
         return $vehicle;
     }
@@ -37,6 +33,20 @@ class VehicleService
     {
         $imageFile = $request->file('image');
         $vehicle = $this->vehicleRepository->update($request, $vehicle);
+        if ($imageFile) {
+            $vehicle = $this->updateImage($vehicle, $imageFile);
+        }
+        return $vehicle;
+    }
+
+
+    public function updateImage(Vehicle $vehicle, UploadedFile $image)
+    {
+        // se esiste carico l'immagine nello storage (locale)
+        $imagePath = $this->uploadImage($vehicle, $image);
+
+        // aggiorno il record del veicolo con l'image path relativo all'immagine caricata
+        return $this->vehicleRepository->updateImage($vehicle, $imagePath);
     }
 
     public function uploadImage(Vehicle $vehicle, UploadedFile $image)

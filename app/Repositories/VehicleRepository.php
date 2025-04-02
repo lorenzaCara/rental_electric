@@ -29,6 +29,7 @@ class VehicleRepository
         $vehicle->tags()->sync($request->tags, [
             'updated_at' => now()
         ]);
+        return $vehicle;
     }
 
     /**
@@ -40,5 +41,6 @@ class VehicleRepository
         $vehicle->update([
             'image_path' => $imagePath
         ]);
+        return $vehicle;
     }
 }
